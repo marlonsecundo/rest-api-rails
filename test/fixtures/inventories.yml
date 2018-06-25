@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  water: 
+  food: 1
+  medication: 1
+  ammunition: 1
+
+two:
+  water: 
+  food: 1
+  medication: 1
+  ammunition: 1

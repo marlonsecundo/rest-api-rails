@@ -1,0 +1,9 @@
+WATER_POINT = 4
+FOOD_POINT = 3
+MEDICATION_POINT = 2
+AMMUNITION_POINT = 1
+
+class Api::V1::Trader
+
+
+end
