@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 # rest-api-rails
 A simple example of API REST in Rails
 
+=======
+>>>>>>> ba6bb8fbeb30cb9633f1beda48e41980567ab327
 # README
 
 This README would normally document whatever steps are necessary to get the
@@ -24,4 +27,8 @@ Things you may want to cover:
 
 * Deployment instructions
 
+<<<<<<< HEAD
 * ...
+=======
+* ...
+>>>>>>> ba6bb8fbeb30cb9633f1beda48e41980567ab327

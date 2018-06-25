@@ -51,7 +51,11 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
+<<<<<<< HEAD
   # config.active_job.queue_name_prefix = "contatos_#{Rails.env}"
+=======
+  # config.active_job.queue_name_prefix = "ZSSN_API_#{Rails.env}"
+>>>>>>> ba6bb8fbeb30cb9633f1beda48e41980567ab327
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.

@@ -16,7 +16,11 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+<<<<<<< HEAD
 module Contatos
+=======
+module ZSSNApi
+>>>>>>> ba6bb8fbeb30cb9633f1beda48e41980567ab327
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
