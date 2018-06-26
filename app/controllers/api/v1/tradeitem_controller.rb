@@ -33,9 +33,20 @@ class Api::V1::TradeitemController < ApplicationController
                     survivor.save
                     anotherSurvivor.save
 
+                else
+
+                    render(json: {Erro:"Enough items", Message:"Some of the survivors do not have the items to be changed"})
+
                 end
 
+            else
+
+                render(json: {Erro: "Points no match",Message:"Not enough points for the exchange"})
             end
+
+        else
+
+            render(json: {Erro:"Infected Survivor!", Message:"Lockout! These items maybe infected!"})
         end
 
 
@@ -45,6 +56,7 @@ class Api::V1::TradeitemController < ApplicationController
 
     def setParams!
 
+        
         @trade_params = params.include?(:trade) ? params.require(:trade).permit(
             :id, :anotherId, 
             items:[:water,:food, :medication, :ammunition], 
