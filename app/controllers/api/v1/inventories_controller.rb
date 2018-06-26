@@ -1,5 +1,4 @@
 class Api::V1::InventoriesController < ApplicationController
-    before_action :setParams!
 
     # GET /api/v1/survivors/1/inventories
     def index

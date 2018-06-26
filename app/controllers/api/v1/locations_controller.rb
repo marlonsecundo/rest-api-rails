@@ -18,6 +18,6 @@ class Api::V1::LocationsController < ApplicationController
         
     private
     def location_params
-        params.include?(:location) ? params.require(:location).permit(:x,:y)
+        params.include?(:location) ? params.require(:location).permit(:x,:y) : nil
     end
 end

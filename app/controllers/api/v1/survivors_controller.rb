@@ -7,13 +7,19 @@ class Api::V1::SurvivorsController < ApplicationController
     # GET /api/v1/survivors
     def index
         survivors = Survivor.all
-        render(json: survivors)
+
+        if (survivors.size > 0)
+            render(json: survivors)
+        else
+            render(json: { Message: "No survivors registered in the apocalypse" } )
+        end
     end
 
     # GET /api/v1/survivors/1
     def show
+        
         survivor = Survivor.find(params[:id])
-        render(json: survivor)
+        renderSurvivor(survivor)
     end
 
     # POST /api/v1/survivors
@@ -39,6 +45,14 @@ class Api::V1::SurvivorsController < ApplicationController
         else
             render(json: survivor.errors, status: :unprocessable_entity)
         end
+
+    end
+
+    def renderSurvivor(survivor)
+
+        location = Location.find_by(survivor_id: survivor.id)
+        inventory = Inventory.find_by(survivor_id: survivor.id)
+        render(json: {Survivor: survivor, Location: location, Inventory: inventory})
 
     end
         
