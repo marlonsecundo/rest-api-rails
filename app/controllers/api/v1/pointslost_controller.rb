@@ -4,20 +4,23 @@ class Api::V1::PointslostController < ApplicationController
     def index
 
         countLost = 0
-        
+
+        trader = Api::V1::Trader.new         
+
         Survivor.all.each do |survivor|
 
             if (survivor.flags >= 3)
             
-                countLost += (survivor.inventory.water * WATER_POINT)
-                countLost += (survivor.inventory.food * FOOD_POINT)
-                countLost += (survivor.inventory.medication * MEDICATION_POINT)
-                countLost += (survivor.inventory.ammunition * AMMUNITION_POINT)
 
+                countLost += (survivor.inventory.water * trader.WATER_POINT)
+                countLost += (survivor.inventory.food * trader.FOOD_POINT)
+                countLost += (survivor.inventory.medication * trader.MEDICATION_POINT)
+                countLost += (survivor.inventory.ammunition * trader.AMMUNITION_POINT)
+                
             end
             
         end
 
-        render(json: countLost)
+        render(json: countLost )
     end
 end

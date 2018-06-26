@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       end
       resources :tradeitem, :only => [:create] do
       end
+      resources :flags, :only => [:create] do
+      end
       
     end
   end
