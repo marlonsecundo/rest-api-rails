@@ -6,10 +6,16 @@ class Api::V1::SurvivorsController < ApplicationController
     
     # GET /api/v1/survivors
     def index
-        survivors = Survivor.all
+        list = []
 
-        if (survivors.size > 0)
-            render(json: survivors)
+        Survivor.all.each do |survivor|
+
+            list << { survivor: survivor, location: survivor.location, inventory: survivor.inventory }
+        end
+
+
+        if (Survivor.all.size > 0)
+            render(json: {tags: list})
         else
             render(json: { Message: "No survivors registered in the apocalypse" } )
         end
