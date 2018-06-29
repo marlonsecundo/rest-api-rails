@@ -8,12 +8,13 @@ class Api::V1::LocationsController < ApplicationController
 
     # PACTH/PUT /api/v1/survivors/1/locations
     def update     
-
-        location = Location.find(params[:survivor_id])
-
-        location.update(location_params)
-            
-        render(json: location)
+        begin
+            location = Location.find(params[:survivor_id])
+            location.update(location_params)
+            render(json: location)
+        rescue ActiveRecord::RecordNotFound => e
+            render(json: {Error: 404, Message: e})
+        end
     end
         
     private

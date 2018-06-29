@@ -11,10 +11,11 @@ class Api::V1::InventoriesController < ApplicationController
 
         inventory = Inventory.new(inventory_params)
 
-        if (inventory.save)
+        begin
+            inventory.save!
             render(json: inventory, status: :created)
-        else
-            render(json: inventory.errors, status: :unprocessable_entity)
+        rescue Exception => e
+            render(json: {Error: 201, json: e})
         end
     end
         

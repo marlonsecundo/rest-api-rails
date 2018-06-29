@@ -18,8 +18,6 @@ class Api::V1::TradeitemController < ApplicationController
 
                 if (survivor.inventory.has_inventory?(inventory) && anotherSurvivor.inventory.has_inventory?(anotherInventory))
 
-                    # render(json: "{ \"YEAHHHH\":\"UHUUUUUU\" }")
-
                     survivor.inventory.water += - inventory.water + anotherInventory.water
                     survivor.inventory.food +=  - inventory.food + anotherInventory.food
                     survivor.inventory.medication += - inventory.medication + anotherInventory.medication

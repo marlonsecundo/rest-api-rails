@@ -1,9 +1,5 @@
 class Api::V1::SurvivorsController < ApplicationController
-    
-    before_action :setParams!
-
-    @survivor_params = nil
-    
+        
     # GET /api/v1/survivors
     def index
         list = []
@@ -17,26 +13,32 @@ class Api::V1::SurvivorsController < ApplicationController
         if (Survivor.all.size > 0)
             render(json: {tags: list})
         else
-            render(json: { Message: "No survivors registered in the apocalypse" } )
+            render(json: {Error: 404, Message: "No survivors registered in the apocalypse" } )
         end
     end
 
     # GET /api/v1/survivors/1
     def show
         
-        survivor = Survivor.find(params[:id])
-        renderSurvivor(survivor)
+        begin
+            survivor = Survivor.find(params[:id])
+            renderSurvivor(survivor)
+        rescue Exception => e
+            render(json: {Error: 404, Message: e})
+        end
+
     end
 
     # POST /api/v1/survivors
     def create
 
-        survivor = Survivor.new(@survivor_params)
+        survivor = Survivor.new(survivor_params)
 
-        if (survivor.save)
-            render(json: survivor, status: :created)
-        else
-            render(json: survivor.errors, status: :unprocessable_entity)
+        begin
+            survivor.save!
+            render(json: survivor)
+        rescue Exception => e
+            render(json: {Error: 201, json: e})
         end
 
     end
@@ -44,16 +46,19 @@ class Api::V1::SurvivorsController < ApplicationController
     # PACTH/PUT /api/v1/survivors/1
     def update
 
-        survivor = Survivor.find(params[:id])
-
-        if (survivor.update(@survivor_params))
-            render(json: survivor)
-        else
-            render(json: survivor.errors, status: :unprocessable_entity)
+        begin
+            survivor = Survivor.find(params[:id])
+            survivor.update!(survivor_params)
+            render(json: {survivor: survivor})
+        rescue ActiveRecord::RecordNotFound => e
+            render(json: {Error: 404, Message: e})
         end
 
     end
 
+
+        
+    private
     def renderSurvivor(survivor)
 
         location = Location.find_by(survivor_id: survivor.id)
@@ -61,10 +66,10 @@ class Api::V1::SurvivorsController < ApplicationController
         render(json: {Survivor: survivor, Location: location, Inventory: inventory})
 
     end
-        
-    private
-    def setParams!
-        @survivor_params = params.include?(:survivor) ? params.require(:survivor).permit(
+
+    def survivor_params
+
+        params.include?(:survivor) ? params.require(:survivor).permit(
             :id, :name, :age, :gender, :flags, 
             location_attributes:[:x, :y],
             inventory_attributes:[:water,:food,:medication,:ammunition]) : nil

@@ -8,5 +8,8 @@ class CreateLocations < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
+    change_column :location, :y, :type, :default => nil
+    change_column :location, :x, :type, :default => nil
+    #Ex:- change_column("admin_users", "email", :string, :limit =>25)
   end
 end
