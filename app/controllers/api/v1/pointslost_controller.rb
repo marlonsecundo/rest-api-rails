@@ -21,6 +21,6 @@ class Api::V1::PointslostController < ApplicationController
             
         end
 
-        render(json: countLost )
+        render(json: { amount: countLost } )
     end
 end

@@ -31,14 +31,14 @@ class Api::V1::SurvivorsController < ApplicationController
 
     # POST /api/v1/survivors
     def create
+        begin
 
         survivor = Survivor.new(survivor_params)
 
-        begin
             survivor.save!
-            render(json: survivor)
+            render(json: {Ok: 201, Message: "Item created", survivor: survivor})
         rescue Exception => e
-            render(json: {Error: 201, json: e})
+            render(json: {Error: 400, json: e})
         end
 
     end
@@ -49,9 +49,11 @@ class Api::V1::SurvivorsController < ApplicationController
         begin
             survivor = Survivor.find(params[:id])
             survivor.update!(survivor_params)
-            render(json: {survivor: survivor})
+            renderSurvivor(survivor)
         rescue ActiveRecord::RecordNotFound => e
             render(json: {Error: 404, Message: e})
+        rescue ActionController::ParameterMissing => e
+            render(json: {Error: 400, Message: e})
         end
 
     end

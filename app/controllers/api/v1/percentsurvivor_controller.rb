@@ -14,7 +14,7 @@ class Api::V1::PercentsurvivorController < ApplicationController
 
         percent = normal / total * 100
 
-        render(json: percent)
+        render(json: {percent: percent} )
 
     end
 end

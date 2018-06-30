@@ -6,11 +6,22 @@ class Api::V1::TradeitemController < ApplicationController
     # POST /api/v1/tradeitem
     def create
 
-        survivor = Survivor.find(@trade_params[:id])
-        inventory = Inventory.new(@trade_params[:items])
+        if setParams!.class == NilClass
+            return
+        end
 
-        anotherSurvivor = Survivor.find(@trade_params[:anotherId])
-        anotherInventory = Inventory.new(@trade_params[:anotherItems])
+
+        begin
+            survivor = Survivor.find(@trade_params[:id])
+            anotherSurvivor = Survivor.find(@trade_params[:anotherId])
+            inventory = Inventory.new(@trade_params[:items])
+            anotherInventory = Inventory.new(@trade_params[:anotherItems])
+        rescue ActiveRecord::RecordNotFound => e
+
+            render(json: {Error: 404, Message: e})
+            return
+        end
+
 
         if (survivor.flags < 3 && anotherSurvivor.flags < 3)
             
@@ -33,18 +44,21 @@ class Api::V1::TradeitemController < ApplicationController
 
                 else
 
-                    render(json: {Erro:"Enough items", Message:"Some of the survivors do not have the items to be changed"})
+
+
+
+                    render(json: {Erro:"1001", Message:"Enough items: Some of the survivors do not have the items to be changed"})
 
                 end
 
             else
 
-                render(json: {Erro: "Points no match",Message:"Not enough points for the exchange"})
+                render(json: {Erro: "1002",Message:"Points no match: Not enough points for the exchange"})
             end
 
         else
 
-            render(json: {Erro:"Infected Survivor!", Message:"Lockout! These items maybe infected!"})
+            render(json: {Erro:"1003", Message:"Infected Survivor, Lockout: These items maybe infected!"})
         end
 
 
@@ -58,8 +72,25 @@ class Api::V1::TradeitemController < ApplicationController
         @trade_params = params.include?(:trade) ? params.require(:trade).permit(
             :id, :anotherId, 
             items:[:water,:food, :medication, :ammunition], 
-            anotherItems:[:water,:food,:medication,:ammunition] 
+            anotherItems:[:water,:food,:medication,:ammunition]
         ) : nil
+
+        begin
+
+            [:items, :anotherItems].each do |req|
+                @trade_params.require(req).require(:water)
+                @trade_params.require(req).require(:food)
+                @trade_params.require(req).require(:medication)
+                @trade_params.require(req).require(:ammunition)
+            end
+
+            @trade_params.require(:id)
+            @trade_params.require(:anotherId)
+
+        rescue ActionController::ParameterMissing => e
+            render(json: {Error: 400, Message: e})
+            nil
+        end
 
     end
 

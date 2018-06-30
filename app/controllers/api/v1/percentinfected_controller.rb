@@ -14,7 +14,7 @@ class Api::V1::PercentinfectedController < ApplicationController
 
         percent = infected / total * 100
 
-        render(json: percent)
+        render(json: {percent: percent} )
 
     end
 
